@@ -1,5 +1,7 @@
 import { longestPalindrome } from "../strings/longestPalindrom";
 
 describe("Test Longest Palindrom", () => {
-  expect(longestPalindrome("bababbdbababad")).toEqual("ababa");
+  it("should be able to find a simple Palindrome", () => {
+    expect(longestPalindrome("bababbdbababad")).toEqual("ababa");
+  });
 });

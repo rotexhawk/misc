@@ -1,11 +1,38 @@
-import { longestPalindrome } from "./strings/longestPalindrom";
-import { findPath } from "./dynamic/robotMaze";
+// IMPORT LIBRARY PACKAGES NEEDED BY YOUR PROGRAM
+// SOME FUNCTIONALITY WITHIN A PACKAGE MAY BE RESTRICTED
+// DEFINE ANY FUNCTION NEEDED
+// FUNCTION SIGNATURE BEGINS, THIS FUNCTION IS REQUIRED
+function cellCompete(states, days) {
+  const beginIndex = 0;
+  const endIndex = 0;
+  const returnStates = [];
+  for (let d = 0; d <= days; d++) {
+    const accState = [...states];
+    for (let j = 0; j < states.length; j++) {
+      returnStates[j] = adjacentState(accState, j);
+    }
+    states = [...accState];
+  }
+  return returnStates;
+}
 
-const maze = Array(4).fill(Array(4).fill(true));
-
-const pal = longestPalindrome("abcbab");
-const path = JSON.stringify(findPath(maze));
-
-console.log("this is the path", maze);
-
-document.getElementById("app").innerHTML = path;
+function adjacentState(states, index) {
+  if (index < 0) {
+    if (states[index + 1] === 0) {
+      return 0;
+    }
+    return 1;
+  }
+  if (index === states.length - 1) {
+    if (states[index - 1] === 0) {
+      return 0;
+    }
+    return 1;
+  }
+  if (states[index - 1] === 0 && states[index + 1] === 0) {
+    return 0;
+  } else if (states[index - 1] === 1 && states[index + 1] === 1) {
+    return 0;
+  }
+  return 1;
+}
