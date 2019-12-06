@@ -1,3 +1,5 @@
+import Queue from "../graph/graph";
+
 class Node {
   constructor(val) {
     this.value = val;
@@ -71,6 +73,23 @@ tree
   .setRight(6);
 tree.setRight(10).setRight(14);
 
+function toArray(tree) {
+  const queue = new Queue();
+  const arr = [tree.getValue()];
+  queue.enqueue(tree);
+  while (queue.size > 0) {
+    const node = tree.dequeue();
+    const leftNode = node.getLeft();
+    const rightNode = node.getRight();
+    arr.push([leftNode.getValue(), rightNode.getValue()]);
+    queue.enqueue(leftNode);
+    queue.enqueue(rightNode);
+  }
+  return arr;
+}
+
+console.log(toArray(tree));
+
 function InOrderTraversal(tree) {
   if (tree) {
     InOrderTraversal(tree.getLeft());
@@ -94,4 +113,4 @@ function contains(elm, tree) {
 }
 
 // InOrderTraversal(tree);
-console.log(contains(10, tree));
+// console.log(contains(10, tree));
