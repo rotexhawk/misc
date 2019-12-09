@@ -2,20 +2,21 @@ import Queue from "../Queue/queue";
 
 function pathExsists(graph, startNode, endNode) {
   const queue = new Queue();
-  queue.enqueue(graph[startNode]);
+  queue.enqueue(startNode);
   const visited = { [startNode]: true };
-  const paths = [startNode];
+  let paths = {};
+  paths[startNode] = null;
   let found = false;
   while (queue.size > 0) {
-    const neighbors = queue.dequeue();
-    for (let node of neighbors) {
-      if (!visited[node]) {
-        queue.enqueue(graph[node]);
-        visited[node] = true;
-
-        paths.push(node);
+    const currentNode = queue.dequeue();
+    const neighbors = graph[currentNode];
+    for (let neighbor of neighbors) {
+      if (!visited[neighbor]) {
+        queue.enqueue(neighbor);
+        visited[neighbor] = true;
+        paths[neighbor] = currentNode;
       }
-      if (node === endNode) {
+      if (currentNode === endNode) {
         found = true;
         break;
       }
@@ -25,41 +26,31 @@ function pathExsists(graph, startNode, endNode) {
     return [];
   }
   console.log("paths visited", JSON.stringify(paths));
-  return getPath(graph, paths, startNode);
+  return getPath(paths, endNode);
 }
 
-function getPath(graph, pathsVisited, startNode) {
-  const paths = [];
-  let visited = {};
-  let canMakePath = true;
-  let i = pathsVisited.length - 1;
-  while (canMakePath) {
-    let path = pathsVisited[i];
-    if (path === startNode) {
-      canMakePath = false;
-    }
-    if (!visited[path]) {
-      visited[path] = true;
-      paths.push(path);
-      console.log("wtf", JSON.stringify(pathsVisited));
-      pathsVisited.splice(i, 0, ...graph[path]);
-      console.log(JSON.stringify(pathsVisited));
-      console.log(path, ...graph[path]);
-    }
+function getPath(howWeReachedNodes, endNode) {
+  const reversedShortestPath = [];
+  let currentNode = endNode;
+
+  while (currentNode !== null) {
+    reversedShortestPath.push(currentNode);
+    currentNode = howWeReachedNodes[currentNode];
   }
-  return paths.reverse();
+
+  return reversedShortestPath.reverse();
 }
 
 // Tests
 const graph = {
   a: ["b", "c", "d"],
   b: ["a", "d"],
-  c: ["a", "e"],
+  c: ["a", "e", "g"],
   d: ["a", "b"],
   e: ["c"],
   f: ["g"],
   g: ["f"]
 };
 
-let bool = pathExsists(graph, "d", "c");
+let bool = pathExsists(graph, "a", "f"); // [a, c, g, f]
 console.log(bool);
