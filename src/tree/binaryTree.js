@@ -1,6 +1,6 @@
-import Queue from "../graph/graph";
+import Queue from "../Queue/queue";
 
-class Node {
+export class Node {
   constructor(val) {
     this.value = val;
     this.left = null;
@@ -18,7 +18,7 @@ class Node {
       return this.left;
     }
     this.left = new Node(value);
-    return this;
+    return this.left;
   }
 
   setRight(value) {
@@ -27,7 +27,7 @@ class Node {
       return this.right;
     }
     this.right = new Node(value);
-    return this;
+    return this.right;
   }
   getLeft() {
     return this.left;
@@ -40,13 +40,21 @@ class Node {
   }
 }
 
-class BinaryTree {
+export class BinaryTree {
   constructor(value) {
     this.root = new Node(value);
   }
 
   insert(value) {
-    return this.root.insert(value);
+    if (!this.root) {
+      this.root = new Node();
+      return this.root;
+    } else if (!this.root.value) {
+      this.root.value = value;
+      return this.root;
+    } else {
+      return this.root.insert(value);
+    }
   }
 
   setLeft(value) {
@@ -78,22 +86,30 @@ function toArray(tree) {
   const arr = [tree.getValue()];
   queue.enqueue(tree);
   while (queue.size > 0) {
-    const node = tree.dequeue();
-    const leftNode = node.getLeft();
-    const rightNode = node.getRight();
-    arr.push([leftNode.getValue(), rightNode.getValue()]);
-    queue.enqueue(leftNode);
-    queue.enqueue(rightNode);
+    const node = queue.dequeue();
+    if (node) {
+      const leftNode = node.getLeft();
+      const rightNode = node.getRight();
+      if (leftNode) {
+        arr.push(leftNode);
+      } else if (rightNode) {
+        arr.push(rightNode);
+      }
+
+      queue.enqueue(leftNode);
+      queue.enqueue(rightNode);
+    }
   }
   return arr;
 }
 
-console.log(toArray(tree));
+// console.log(toArray(tree));
 
-function InOrderTraversal(tree) {
+export function InOrderTraversal(tree) {
   if (tree) {
-    InOrderTraversal(tree.getLeft());
     console.log(tree.getValue());
+    InOrderTraversal(tree.getLeft());
+
     InOrderTraversal(tree.getRight());
   }
 }
@@ -114,3 +130,4 @@ function contains(elm, tree) {
 
 // InOrderTraversal(tree);
 // console.log(contains(10, tree));
+// console.log(contains(13, tree));
