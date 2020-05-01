@@ -8,7 +8,8 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "elapsed-time": "0.0.1"
+    "elapsed-time": "0.0.1",
+    "sanctuary": "3.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.2.0",

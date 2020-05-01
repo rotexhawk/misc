@@ -33,5 +33,5 @@ function search(string, pattern) {
   return false;
 }
 
-console.log("kmp found it", search(string, pattern));
+console.log("kmp found it", computePiTable("ababbab"));
 console.log("kmp found", search("i can find a needle in a haystack", "needle"));

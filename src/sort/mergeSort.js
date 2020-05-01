@@ -6,12 +6,7 @@ export const mergeSort = arr => {
   if (left.length <= 1 && right.length <= 1) {
     return mergeLists(left, right);
   }
-  if (left.length <= 1) {
-    return [...mergeLists(left, mergeSort(right))];
-  }
-  if (right.length <= 1) {
-    return [...mergeLists(right, mergeSort(left))];
-  }
+
   return mergeLists(mergeSort(left), mergeSort(right));
 };
 
@@ -21,14 +16,16 @@ const mergeLists = (listA, listB) => {
   const maxLength = listA.length + listB.length;
 
   while (k < maxLength) {
+    if (j === listB.length) {
+      return [...sortedList, ...listA.slice(i)];
+    } else if (i === listA.length) {
+      return [...sortedList, ...listB.slice(j)];
+    }
     if (listA[i] <= listB[j]) {
       sortedList[k] = listA[i];
       i++;
       k++;
     } else {
-      if (j === listB.length) {
-        return [...sortedList, ...listA.slice(i)];
-      }
       sortedList[k] = listB[j];
       j++;
       k++;
@@ -37,3 +34,5 @@ const mergeLists = (listA, listB) => {
 
   return sortedList;
 };
+
+console.log(mergeSort([7, 20, 5, 13, 100, 1, 19, 4]));
